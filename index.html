@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>For You 🌻</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        background: #000;
+        overflow: hidden;
+        font-family: 'Poppins', sans-serif;
+        touch-action: manipulation;
+    }
+    
+    .sky {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+    }
+    
+    /* Aurora effect */
+    .sky::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, 
+            rgba(0,255,150,0.1) 0%, 
+            rgba(0,150,255,0.1) 50%, 
+            rgba(255,0,150,0.1) 100%);
+        filter: blur(60px);
+        animation: aurora 8s ease-in-out infinite alternate;
+    }
+    
+    @keyframes aurora {
+        0% { transform: translateX(-20%) skewX(-10deg); }
+        100% { transform: translateX(20%) skewX(10deg); }
+    }
+    
+    .stars {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+            radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+            radial-gradient(1px 1px at 90px 40px, #fff, transparent);
+        background-size: 200px 100px;
+        animation: twinkle 4s ease-in-out infinite alternate;
+    }
+    
+    @keyframes twinkle {
+        0% { opacity: 0.3; }
+        100% { opacity: 1; }
+    }
+    
+    /* Fireflies */
+    .firefly {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: #ffff9e;
+        border-radius: 50%;
+        box-shadow: 0 0 10px #ffff9e, 0 0 20px #ffff9e;
+        animation: fly 10s linear infinite;
+    }
+    
+    @keyframes fly {
+        0% { transform: translate(0, 0); opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { transform: translate(100px, -200px); opacity: 0; }
+    }
+    
+    .container {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        height: 70%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+    }
+    
+    .flower {
+        position: relative;
+        width: 40px;
+        height: 0;
+        transform-origin: bottom center;
+        filter: drop-shadow(0 0 8px rgba(255, 241, 118, 0.6));
+    }
+      .stem {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 4px;
+        height: 0;
+        background: linear-gradient(to top, #0d4d0d, #4caf50, #81c784);
+        transform: translateX(-50%);
+        border-radius: 2px;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        animation: growStem 2s ease-out forwards;
+    }
+    
+    @keyframes growStem {
+        to { height: var(--stem-height); }
+    }
+    
+    .leaf {
+        position: absolute;
+        width: 30px;
+        height: 15px;
+        background: linear-gradient(45deg, #1b5e20, #4caf50);
+        border-radius: 0 100% 0 100%;
+        opacity: 0;
+        transform-origin: left center;
+        box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+        animation: growLeaf 1s ease-out forwards;
+    }
+    
+    .leaf.left { left: -25px; transform: rotate(-25deg); }
+    .leaf.right { right: -25px; transform: rotate(25deg) scaleX(-1); }
+    
+    @keyframes growLeaf {
+        0% { opacity: 0; transform: scale(0) rotate(-25deg); }
+        100% { opacity: 1; transform: scale(1) rotate(-25deg); }
+    }
+    
+    .bloom {
+        position: absolute;
+        top: calc(-1 * var(--stem-height));
+        left: 50%;
+        width: 0;
+        height: 0;
+        transform: translateX(-50%);
+        animation: bloomFlower 1.5s ease-out forwards;
+        animation-delay: 2s;
+        filter: drop-shadow(0 0 15px rgba(251, 192, 45, 0.8));
+    }
+    
+    @keyframes bloomFlower {
+        to { width: 70px; height: 70px; }
+    }
+    
+    .petal {
+        position: absolute;
+        width: 35px;
+        height: 35px;
+        background: radial-gradient(circle at 30% 30%, #fff9c4, #fff176, #fbc02d);
+        border-radius: 50% 0;
+        transform-origin: bottom right;
+        opacity: 0;
+        box-shadow: inset 0 0 10px rgba(245, 127, 23, 0.3);
+        animation: showPetal 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    }
+    
+    @keyframes showPetal {
+        0% { opacity: 0; transform: scale(0) rotate(var(--rot)); }
+        100% { opacity: 1; transform: scale(1) rotate(var(--rot)); }
+    }
+    
+    .center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 24px;
+        height: 24px;
+        background: radial-gradient(circle, #ff8f00, #f57f17);
+        border-radius: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        box-shadow: 0 0 15px #ff8f00;
+        animation: growCenter 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        animation-delay: 3s;
+    }
+    
+    @keyframes growCenter {
+        to { transform: translate(-50%, -50%) scale(1); }
+    }
+    
+    /* Sparkle effect */
+    .sparkle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: #fff;
+        border-radius: 50%;
+        animation: sparkle 1s ease-out forwards;
+    }
+    
+    @keyframes sparkle {
+        0% { transform: scale(0); opacity: 1; }
+        100% { transform: scale(3); opacity: 0; }
+    }
+    
+    .heart {
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        animation: float 7s ease-in-out infinite;
+        opacity: 0.9;
+        filter: drop-shadow(0 0 5px rgba(255, 107, 107, 0.8));
+    }
+    
+    .heart::before, .heart::after {
+        content: '';
+        position: absolute;
+        width: 11px;
+        height: 17px;
+        background: #ff6b6b;
+        border-radius: 11px 11px 0 0;
+        transform: rotate(-45deg);
+        transform-origin: 0 100%;
+    }
+    
+    .heart::after {
+        left: 11px;
+        transform: rotate(45deg);
+        transform-origin: 100% 100%;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+        33% { transform: translateY(-25px) translateX(15px) rotate(10deg); }
+        66% { transform: translateY(-15px) translateX(-15px) rotate(-10deg); }
+    }
+    
+    .grass {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 50px;
+        background: linear-gradient(to top, #0d4d0d, transparent);
+    }
+    
+    .grass::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(27, 94, 32, 0.3) 2px,
+            rgba(27, 94, 32, 0.3) 4px
+        );
+        animation: sway 3s ease-in-out infinite;
+    }
+    
+    @keyframes sway {
+        0%, 100% { transform: skewX(-2deg); }
+        50% { transform: skewX(2deg); }
+    }
+    
+    .message {
+        position: absolute;
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        font-family: 'Dancing Script', cursive;
+        font-size: 36px;
+        font-weight: 700;
+        background: linear-gradient(45deg, #fff176, #ff8f00, #fff176);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-align: center;
+        opacity: 0;
+        z-index: 10;
+        filter: drop-shadow(0 0 20px rgba(255, 241, 118, 0.8));
+    }
+    
+    .message.show {
+        animation: popMessage 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 4.5s forwards;
+    }
+    
+    @keyframes popMessage {
+        0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+        60% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+        100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+    
+    .tap-text {
+        position: absolute;
+        top: 20px;
+        width: 100%;
+        text-align: center;
+        color: rgba(255,255,255,0.6);
+        font-size: 13px;
+        animation: fadeOut 3s ease-out 6s forwards;
+    }
+    
+    @keyframes fadeOut {
+        to { opacity: 0; }
+    }
+</style>
+</head>
+<body>
+    <div class="sky">
+        <div class="stars"></div>
+        <div class="tap-text">Tap di mana aja ✨</div>
+        <div class="message" id="loveText">Untuk Kamu 🌻</div>
+        <div class="grass"></div>
+        <div class="container" id="garden"></div>
+    </div>
+        <script>
+        const garden = document.getElementById('garden');
+        const sky = document.querySelector('.sky');
+
+        // Config bunga
+        const flowers = [
+            { height: '180px', delay: 0, left: '-70px' },
+            { height: '230px', delay: 0.4, left: '-25px' },
+            { height: '200px', delay: 0.8, left: '25px' },
+            { height: '170px', delay: 1.2, left: '70px' }
+        ];
+
+        // Bikin fireflies
+        for(let i = 0; i < 15; i++) {
+            const firefly = document.createElement('div');
+            firefly.className = 'firefly';
+            firefly.style.left = Math.random() * 100 + '%';
+            firefly.style.top = Math.random() * 100 + '%';
+            firefly.style.animationDelay = Math.random() * 10 + 's';
+            firefly.style.animationDuration = (Math.random() * 5 + 8) + 's';
+            sky.appendChild(firefly);
+        }
+
+        // Bikin bunga
+        flowers.forEach((config, i) => {
+            const flower = document.createElement('div');
+            flower.className = 'flower';
+            flower.style.left = config.left;
+
+            const stem = document.createElement('div');
+            stem.className = 'stem';
+            stem.style.setProperty('--stem-height', config.height);
+            stem.style.animationDelay = config.delay + 's';
+
+            // Daun
+            const leaf1 = document.createElement('div');
+            leaf1.className = 'leaf left';
+            leaf1.style.bottom = '35%';
+            leaf1.style.animationDelay = (config.delay + 1) + 's';
+
+            const leaf2 = document.createElement('div');
+            leaf2.className = 'leaf right';
+            leaf2.style.bottom = '55%';
+            leaf2.style.animationDelay = (config.delay + 1.3) + 's';
+
+            const bloom = document.createElement('div');
+            bloom.className = 'bloom';
+            bloom.style.setProperty('--stem-height', config.height);
+
+            // 4 kelopak + sparkle
+            for(let j = 0; j < 4; j++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                petal.style.setProperty('--rot', j * 90 + 'deg');
+                petal.style.transform = `rotate(${j * 90}deg)`;
+                petal.style.animationDelay = (config.delay + 2.2 + j * 0.15) + 's';
+                bloom.appendChild(petal);
+
+                // Sparkle effect
+                setTimeout(() => {
+                    for(let k = 0; k < 3; k++) {
+                        const sparkle = document.createElement('div');
+                        sparkle.className = 'sparkle';
+                        sparkle.style.left = (Math.random() * 60 - 30) + 'px';
+                        sparkle.style.top = (Math.random() * 60 - 30) + 'px';
+                        sparkle.style.animationDelay = (k * 0.1) + 's';
+                        bloom.appendChild(sparkle);
+                        setTimeout(() => sparkle.remove(), 1000);
+                    }
+                }, (config.delay + 2.5 + j * 0.15) * 1000);
+            }
+
+            const center = document.createElement('div');
+            center.className = 'center';
+            center.style.animationDelay = (config.delay + 3) + 's';
+            bloom.appendChild(center);
+
+            flower.appendChild(stem);
+            flower.appendChild(leaf1);
+            flower.appendChild(leaf2);
+            flower.appendChild(bloom);
+            garden.appendChild(flower);
+        });
+
+        // Fungsi bikin love + ring
+        function createHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+
+            const ring = document.createElement('div');
+            ring.style.position = 'absolute';
+            ring.style.width = '32px';
+            ring.style.height = '32px';
+            ring.style.border = '2px solid rgba(76, 175, 80, 0.4)';
+            ring.style.borderRadius = '50%';
+            ring.style.left = '-5px';
+            ring.style.top = '-5px';
+            ring.style.animation = 'pulse 2s ease-in-out infinite';
+            heart.appendChild(ring);
+
+            sky.appendChild(heart);
+            setTimeout(() => heart.remove(), 9000);
+        }
+
+        // Tambah keyframe pulse
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); opacity: 0.4; }
+                50% { transform: scale(1.2); opacity: 0.8; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Love otomatis
+        setInterval(() => {
+            createHeart(
+                Math.random() * window.innerWidth,
+                Math.random() * window.innerHeight * 0.6
+            );
+        }, 1800);
+
+        // Tap event
+        document.addEventListener('click', (e) => {
+            createHeart(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('touchstart', (e) => {
+            createHeart(e.touches[0].clientX, e.touches[0].clientY);
+        });
+
+        // Show message
+        setTimeout(() => {
+            document.getElementById('loveText').classList.add('show');
+        }, 4500);
+    </script>
+</body>
+</html>
